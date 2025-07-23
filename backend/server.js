@@ -32,7 +32,9 @@ app.post("/register", async (req, res) => {
 
     const existingUser = await User.findOne({ mobileNo });
     if (existingUser) {
-      return res.status(400).send("User already exists with this mobile number");
+      return res
+        .status(400)
+        .send("User already exists with this mobile number");
     }
 
     const hashed = await bcrypt.hash(password, 10);
@@ -65,10 +67,66 @@ app.post("/login", async (req, res) => {
 app.get("/me", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
-    if (!user) return res.status(404).send("User not found");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" }); // ✅ return JSON
+    }
     res.json(user);
   } catch (err) {
     console.error("❌ Error fetching user data:", err);
+    res.status(500).json({ error: "Server error" }); // ✅ return JSON
+  }
+});
+
+// 🔒 Get all users (Admin or Authenticated Access)
+app.get("/users", auth, async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).send("Server error");
+  }
+});
+
+// 🔒 Get user by ID
+app.get("/users/:id", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).send("User not found");
+    res.json(user);
+  } catch (err) {
+    console.error("❌ Error fetching user:", err);
+    res.status(500).send("Server error");
+  }
+});
+
+// 🔒 Update user by ID
+app.put("/users/:id", auth, async (req, res) => {
+  try {
+    const { name, age, address, mobileNo } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, age, address, mobileNo },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!updatedUser) return res.status(404).send("User not found");
+    res.json(updatedUser);
+  } catch (err) {
+    console.error("❌ Error updating user:", err);
+    res.status(500).send("Server error");
+  }
+});
+
+// 🔒 Delete user by ID
+app.delete("/users/:id", auth, async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) return res.status(404).send("User not found");
+    res.send("User deleted");
+  } catch (err) {
+    console.error("Error deleting user:", err);
     res.status(500).send("Server error");
   }
 });

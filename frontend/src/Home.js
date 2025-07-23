@@ -46,12 +46,16 @@ function Home() {
   };
 
   useEffect(() => {
+  const storedName = localStorage.getItem("username");
+  if (storedName) {
+    setUsername(storedName);
+  } else {
     getUserData();
-  }, []);
+  }
+}, []);
+
 
   const HomePage = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
     navigate("/dashboard");
   };
 
