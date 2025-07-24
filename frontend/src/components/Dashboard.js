@@ -1,14 +1,30 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Home.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchMe,
+  fetchUsers,
+  deleteUserById,
+  updateUserById,
+} from "../redux/userSlice";
 
 function Dashboard() {
-  const [name, setUsername] = useState("");
-  const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", mobileNo: "" });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { users, me } = useSelector((state) => ({
+    users: state.user.users,
+    me: state.user.me,
+  }));
+
+  useEffect(() => {
+    dispatch(fetchMe());
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -16,104 +32,37 @@ function Dashboard() {
     navigate("/login");
   };
 
-  const getUserData = async () => {
-    const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/me", {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    });
-    const data = await res.json();
-    setUsername(data.name);
-  };
-
-  useEffect(() => {
-    const storedName = localStorage.getItem("username");
-    if (storedName) {
-      setUsername(storedName);
-    } else {
-      getUserData();
-    }
-    fetchUsers();
-  }, []);
-
   const HomePage = () => {
     navigate("/home");
   };
 
-  const fetchUsers = async () => {
-    const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/users", {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
+  const handleDelete = (id) => {
+    dispatch(deleteUserById(id)).then((action) => {
+      if (deleteUserById.fulfilled.match(action)) {
+        // Optionally, you can re-fetch users or rely on slice to update state
+        dispatch(fetchUsers());
+      }
     });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("Error:", errorText);
-      return;
-    }
-
-    const userList = await res.json();
-    setUsers(userList);
-  };
-
-  const deleteUser = async (id) => {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("Delete Error:", errorText);
-      return;
-    }
-
-    alert("User deleted successfully!");
-    setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
   };
 
   const handleEditChange = (e) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
-  const updateUser = async (id) => {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(`http://localhost:5000/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify(editForm),
+  const handleUpdate = (id) => {
+    dispatch(updateUserById({ id, data: editForm })).then((action) => {
+      if (updateUserById.fulfilled.match(action)) {
+        setEditingUser(null);
+        dispatch(fetchUsers());
+      }
     });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("Update Error:", errorText);
-      return;
-    }
-
-    const updated = await res.json();
-    setUsers((prevUsers) =>
-      prevUsers.map((user) => (user._id === id ? updated : user))
-    );
-    setEditingUser(null);
   };
 
   return (
     <div className="dashboard">
       <main className="main-content">
         <header className="topbar">
-          <p>Welcome, {name}</p>
+          <p>Welcome, {me ? me.name : "User"}</p>
           <button onClick={logout}>Sign Out</button>
         </header>
 
@@ -130,7 +79,7 @@ function Dashboard() {
 
           <section className="content">
             <h3>User List</h3>
-            {users.length === 0 ? (
+            {(!users || users.length === 0) ? (
               <p>No users available.</p>
             ) : (
               users.map((user) =>
@@ -156,7 +105,7 @@ function Dashboard() {
                           onChange={handleEditChange}
                           placeholder="Mobile"
                         />
-                        <button onClick={() => updateUser(user._id)}>
+                        <button onClick={() => handleUpdate(user._id)}>
                           Save
                         </button>
                         <button onClick={() => setEditingUser(null)}>
@@ -182,7 +131,7 @@ function Dashboard() {
                         >
                           Edit
                         </button>
-                        <button onClick={() => deleteUser(user._id)}>
+                        <button onClick={() => handleDelete(user._id)}>
                           Delete
                         </button>
                       </>

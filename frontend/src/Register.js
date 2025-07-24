@@ -2,10 +2,15 @@ import { useState } from "react";
 import axios from "axios";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import { registerUser } from "./redux/userSlice";
 
 function Register() {
   const [form, setForm] = useState({ name: "", age: "", address: "", mobileNo: "", password: "" });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.user);
+
   const register = async () => {
     if (form.password.length < 6) {
       alert("Password must be at least 6 characters long.");
@@ -13,16 +18,15 @@ function Register() {
     }
   
     try {
-      await axios.post("http://localhost:5000/register", form);
-      alert("Registered successfully!");
-      setForm({ name: "", age: "", address: "", mobileNo: "", password: "" });
-    } catch (err) {
-      if (err.response && err.response.status === 400) {
-        alert(err.response.data); // Show backend error (e.g. "Mobile number already exists")
-      } else {
-        alert("Something went wrong. Please try again.");
-        console.error("Registration error:", err);
+      const resultAction = await dispatch(registerUser(form));
+      if (registerUser.fulfilled.match(resultAction)) {
+        alert("Registered successfully!");
+        setForm({ name: "", age: "", address: "", mobileNo: "", password: "" });
+      } else if (registerUser.rejected.match(resultAction)) {
+        alert(resultAction.payload);
       }
+    } catch (err) {
+      alert("Something went wrong. Please try again.");
     }
   };
 
@@ -54,9 +58,10 @@ function Register() {
             <input type="password" placeholder="Password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
           </div>
           <div style={{display:"flex",justifyContent:"center",gap:"10px"}}>
-            <button onClick={register}>Register</button>
+            <button onClick={register} disabled={loading}>Register</button>
             <button onClick={LoginForm}>login</button>
           </div>
+          {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
         </div>
       </div>
     </div>

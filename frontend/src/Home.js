@@ -10,7 +10,7 @@ function Home() {
   const navigate = useNavigate();
 
   const searchWeather = async () => {
-    const apiKey = "f927eaf568126722c6e9bd816e0c6c9d";
+    const apiKey = "95c580fcc2260e12a2498efadfc1b14d";
     const url = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${query}`;
 
     try {
