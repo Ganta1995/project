@@ -1,0 +1,107 @@
+[{
+  "_id": {
+    "$oid": "682b3532db2a6fe224663a95"
+  },
+  "mobileNo": "9949211239",
+  "password": "$2b$10$TL1m7S29uOL7AhRssdslReBvGXho1anwbkXpMc503X39gq6u894NW",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682c3a0278511a7df3a5af73"
+  },
+  "name": "Lahari ",
+  "age": 25,
+  "address": "6/25,venkojigaripalli,Nimmanapalli-517280",
+  "mobileNo": "8309353237",
+  "password": "$2b$10$9zmWF2bgPAkQgFzCrhgjtOCLWOrqL6N3K0WrTyS4KD/K47Z.AZJee",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682c3a8778511a7df3a5af76"
+  },
+  "name": "hari",
+  "age": 40,
+  "address": "madanapalle",
+  "mobileNo": "123456789",
+  "password": "$2b$10$R36F2G2wlRidScut/P6uv.TZ/ScedUQLCJ1g.bFfEMSmnXd9q/RpO",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682c3b7578511a7df3a5af7a"
+  },
+  "name": "radha",
+  "age": 50,
+  "address": "nimmanapalle",
+  "mobileNo": "9949211238",
+  "password": "$2b$10$xp.I/YwlR78TJqc0NihPNepYSoIVDl1Ej/nUUZiasL3A8AfZAVi1i",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6851971d96b6574a2f2cd483"
+  },
+  "name": "raju",
+  "age": 30,
+  "address": "Venkojigaripalli,nimmanapalli",
+  "mobileNo": "7702677794",
+  "password": "$2b$10$8nU3igOu8arpeGC4EarbG.Gk/91BEKsStN05Vwrh79HQCiyvbawLy",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6880d759862fb78e2c360175"
+  },
+  "name": "kings",
+  "age": 23,
+  "address": "nimmanapalle",
+  "mobileNo": "7702692619",
+  "password": "$2b$10$YEoSnHwV6yuxlckWdk.feO0gS0UsvHqTJ5qHNr12Y4ywoDuRs3tu.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6880ed136a27c4ee01c91e63"
+  },
+  "name": "Purushotham",
+  "age": 30,
+  "address": "Venkojigaripalle",
+  "mobileNo": "6303537002",
+  "password": "$2b$10$UdX1sIrUBD4HKMoPxuhiZ.FOQvR3dzBda78..LFQY5a3.MHKy.BU2",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881e549c0b9e0fe284a845c"
+  },
+  "name": "veera mullu",
+  "age": 50,
+  "address": "madanapalle",
+  "mobileNo": "6303537001",
+  "password": "$2b$10$sBsoi5zh2AvcEOyn8/CPYunHhBkvOiyqFsYNRRqXcJyyPdVVD0GPK",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881e5c8c0b9e0fe284a845f"
+  },
+  "name": "raju",
+  "age": 21,
+  "address": "mkjfhjhuhf",
+  "mobileNo": "223344556677",
+  "password": "$2b$10$wVVBNb6cGoSBFyYpMSrJsuRsoCoZJY/UaAbtiyf1G5Hx4jBFL4emy",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881e7f8c0b9e0fe284a846b"
+  },
+  "name": "Ganta purushotham",
+  "age": 30,
+  "address": "Nimmanapalli",
+  "mobileNo": "09640403629",
+  "password": "$2b$10$DFHNPqObew.4nMLG9gu8R.sE1bYFHiib1BNTth316Nls3zHM9cGIy",
+  "__v": 0
+}]
